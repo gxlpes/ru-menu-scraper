@@ -1,28 +1,28 @@
 package com.scraper.ruscraperapi.data.meals;
 
+import org.springframework.stereotype.Component;
+
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-
+@Component
 public class ResponseMenu {
 
-    private LocalDate date;
+    private Instant date;
     private List<Meal> meals;
 
     public ResponseMenu() {
         this.meals = new ArrayList<>();
-        this.date = LocalDate.now().plusDays(2);
+        this.date = (Instant.now());
     }
 
-    public void setDate(String date) {
-        this.date = LocalDate.parse(date);
-    }
-
-    public LocalDate getDate() {
+    public Instant getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(Instant date) {
         this.date = date;
     }
 
