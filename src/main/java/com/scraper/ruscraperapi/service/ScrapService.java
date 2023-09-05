@@ -23,7 +23,7 @@ public class ScrapService {
         this.scraperRU = scraperRU;
     }
 
-    public Optional<Object> getMenuToday() {
+    public Optional<Object> getMenuToday(String ruCode) {
         Elements mealRows = scraperRU.parseTableHtml();
         Meal mealPeriod = null;
 

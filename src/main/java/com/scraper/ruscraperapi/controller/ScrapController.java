@@ -2,6 +2,7 @@ package com.scraper.ruscraperapi.controller;
 
 import com.scraper.ruscraperapi.service.ScrapService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,10 +18,11 @@ public class ScrapController {
         this.scrapService = scrapService;
     }
 
-    @GetMapping("/scrape")
-    public Optional<Object> getMenu() {
 
-       return scrapService.getMenuToday();
+    @GetMapping("/scrape/{ruCode}")
+    public Optional<Object> getMenu(@PathVariable String ruCode) {
+
+       return scrapService.getMenuToday(ruCode);
 
     }
 }

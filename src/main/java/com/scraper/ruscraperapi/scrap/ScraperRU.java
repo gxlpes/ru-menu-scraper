@@ -1,5 +1,6 @@
 package com.scraper.ruscraperapi.scrap;
 
+import com.scraper.ruscraperapi.data.ru.Ru;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -15,13 +16,24 @@ public class ScraperRU {
     private Document htmlDocument;
     private final String localDate;
 
-    public ScraperRU() {
+    private Ru ru;
+
+    public ScraperRU(Ru ru) {
+        this.ru = ru;
         localDate = LocalDate.now().plusDays(1).format(DateTimeFormatter.ofPattern("dd/MM"));
         try {
             this.htmlDocument = Jsoup.connect("https://pra.ufpr.br/ru/ru-centro-politecnico/").get();
         } catch (IOException e) {
             System.err.println("Failed to retrieve menu: " + e.getMessage());
         }
+    }
+
+    public Ru getRu() {
+        return ru;
+    }
+
+    public void setRu(Ru ru) {
+        this.ru = ru;
     }
 
     public Elements parseTableHtml() {
