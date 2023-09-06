@@ -14,27 +14,18 @@ import java.time.format.DateTimeFormatter;
 @Component
 public class ScraperRU {
     private Document htmlDocument;
-    private final String localDate;
+    private String localDate;
 
-    private Ru ru;
 
-    public ScraperRU(Ru ru) {
-        this.ru = ru;
-        localDate = LocalDate.now().plusDays(1).format(DateTimeFormatter.ofPattern("dd/MM"));
+    public void connect(String webURL) {
+        this.localDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM"));
         try {
-            this.htmlDocument = Jsoup.connect("https://pra.ufpr.br/ru/ru-centro-politecnico/").get();
+            this.htmlDocument = Jsoup.connect(webURL).get();
         } catch (IOException e) {
             System.err.println("Failed to retrieve menu: " + e.getMessage());
         }
     }
 
-    public Ru getRu() {
-        return ru;
-    }
-
-    public void setRu(Ru ru) {
-        this.ru = ru;
-    }
 
     public Elements parseTableHtml() {
         Element titleContainingDate = htmlDocument.selectFirst("p:contains(" + localDate + ")");

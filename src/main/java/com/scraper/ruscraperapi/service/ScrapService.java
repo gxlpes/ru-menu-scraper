@@ -3,6 +3,9 @@ package com.scraper.ruscraperapi.service;
 import com.scraper.ruscraperapi.data.meals.Meal;
 import com.scraper.ruscraperapi.data.meals.MealOption;
 import com.scraper.ruscraperapi.data.meals.ResponseMenu;
+import com.scraper.ruscraperapi.data.meals.ResponseMenuFactory;
+import com.scraper.ruscraperapi.data.ru.Ru;
+import com.scraper.ruscraperapi.data.ru.RuFactory;
 import com.scraper.ruscraperapi.scrap.ScraperRU;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -15,15 +18,21 @@ import java.util.Optional;
 @Service
 public class ScrapService {
 
-    private final ResponseMenu responseMenu;
+    private final ResponseMenuFactory responseMenuFactory;
     private final ScraperRU scraperRU;
 
-    public ScrapService(ResponseMenu responseMenu, ScraperRU scraperRU) {
-        this.responseMenu = responseMenu;
+    private final RuFactory ruFactory;
+
+    public ScrapService(ResponseMenuFactory responseMenuFactory, RuFactory ruFactory, ScraperRU scraperRU) {
+        this.responseMenuFactory = responseMenuFactory;
         this.scraperRU = scraperRU;
+        this.ruFactory = ruFactory;
     }
 
     public Optional<Object> getMenuToday(String ruCode) {
+        Ru ru = ruFactory.createRu(ruCode);
+        ResponseMenu responseMenu = responseMenuFactory.createResponseMenu(ru);
+        scraperRU.connect(ru.getUrl());
         Elements mealRows = scraperRU.parseTableHtml();
         Meal mealPeriod = null;
 
@@ -62,7 +71,7 @@ public class ScrapService {
         }
 
         if (mealPeriod != null) {
-            responseMenu.addMeal(mealPeriod);
+            responseMenuFactory.addMealToResponseMenu(responseMenu, mealPeriod);
         }
 
         return Optional.of(responseMenu);

@@ -6,18 +6,18 @@ public class Ru {
     private String name;
     private String code;
 
+    public Ru(String code, String url, String name) {
+        this.code = code;
+        this.url = url;
+        this.name = name;
+    }
+
     public String getCode() {
         return code;
     }
 
     public void setCode(String code) {
         this.code = code;
-    }
-
-    public Ru(String ruCode) {
-        this.url = getUrlFromRu(ruCode);
-        this.name = convertRuName(ruCode);
-        this.code = ruCode;
     }
 
     public String getUrl() {
@@ -34,21 +34,5 @@ public class Ru {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getUrlFromRu(String ruCode) {
-        return switch (ruCode) {
-            case "bot" -> "https://pra.ufpr.br/ru/cardapio-ru-jardim-botanico/";
-            case "pol" -> "https://pra.ufpr.br/ru/ru-centro-politecnico/";
-            default -> "Not found";
-        };
-    }
-
-    public String convertRuName(String ruCode) {
-        return switch (ruCode) {
-            case "bot" -> "Botânico";
-            case "pol" -> "Politécnico";
-            default -> "Not found";
-        };
     }
 }
