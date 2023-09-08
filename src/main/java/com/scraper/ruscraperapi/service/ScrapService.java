@@ -7,11 +7,11 @@ import com.scraper.ruscraperapi.data.meals.ResponseMenuFactory;
 import com.scraper.ruscraperapi.data.ru.Ru;
 import com.scraper.ruscraperapi.data.ru.RuFactory;
 import com.scraper.ruscraperapi.scrap.ScraperRU;
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
-import org.jsoup.Jsoup;
 
 import java.util.Optional;
 
@@ -20,7 +20,6 @@ public class ScrapService {
 
     private final ResponseMenuFactory responseMenuFactory;
     private final ScraperRU scraperRU;
-
     private final RuFactory ruFactory;
 
     public ScrapService(ResponseMenuFactory responseMenuFactory, RuFactory ruFactory, ScraperRU scraperRU) {

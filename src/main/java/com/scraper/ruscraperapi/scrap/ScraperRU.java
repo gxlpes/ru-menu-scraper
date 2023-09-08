@@ -1,6 +1,7 @@
 package com.scraper.ruscraperapi.scrap;
 
-import com.scraper.ruscraperapi.data.ru.Ru;
+import com.scraper.ruscraperapi.data.meals.Meal;
+import com.scraper.ruscraperapi.data.meals.ResponseMenu;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -13,9 +14,9 @@ import java.time.format.DateTimeFormatter;
 
 @Component
 public class ScraperRU {
+
     private Document htmlDocument;
     private String localDate;
-
 
     public void connect(String webURL) {
         this.localDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM"));
@@ -26,12 +27,9 @@ public class ScraperRU {
         }
     }
 
-
     public Elements parseTableHtml() {
         Element titleContainingDate = htmlDocument.selectFirst("p:contains(" + localDate + ")");
-        if (titleContainingDate == null) {
-            return null;
-        }
+        if (titleContainingDate == null) return null;
         Element menuFromWeekday = titleContainingDate.nextElementSibling();
         return menuFromWeekday.select("table tbody tr");
     }
@@ -41,11 +39,46 @@ public class ScraperRU {
         if (lastIndexOfSlash != -1) {
             String extractedPart = url.substring(lastIndexOfSlash + 1);
             int indexOfDot = extractedPart.lastIndexOf('.');
-            if (indexOfDot != -1) {
-                return extractedPart.substring(0, indexOfDot);
-            }
+            if (indexOfDot != -1) return extractedPart.substring(0, indexOfDot);
         }
         return null;
     }
+
+    private void parseMealRows(Elements mealRows, ResponseMenu responseMenu) {
+        Meal mealPeriod = null;
+
+        for (Element element : mealRows) {
+            Element tdElement = element.select("td").first();
+
+            if (tdElement.text().equalsIgnoreCase("CAFÉ DA MANHÃ") || tdElement.text().equalsIgnoreCase("ALMOÇO") || tdElement.text().equalsIgnoreCase("JANTAR")) {
+                if (mealPeriod != null) {
+                    responseMenu.addMeal(mealPeriod);
+                }
+                mealPeriod = new Meal();
+                mealPeriod.setTitle(tdElement.text());
+                continue;
+            }
+
+            if (mealPeriod != null) {
+                String[] contentFromRow = tdElement.html().split("<br>");
+                for (String contentPart : contentFromRow) {
+                    MealOption mealOption = new MealOption();
+
+                    Document contentDocument = Jsoup.parse(contentPart);
+                    String text = contentDocument.text();
+
+                    mealOption.setName(text);
+
+                    Elements imgElements = contentDocument.select("img");
+                    for (Element imgElement : imgElements) {
+                        String src = imgElement.attr("src");
+                        String imageName = extractFileNameWithoutExtension(src);
+                        mealOption.addIcon(imageName);
+                    }
+
+                    mealPeriod.addMealOption(mealOption);
+                }
+            }
+        }}
 
 }

@@ -18,11 +18,8 @@ public class ScrapController {
         this.scrapService = scrapService;
     }
 
-
     @GetMapping("/scrape/{ruCode}")
     public Optional<Object> getMenu(@PathVariable String ruCode) {
-
-       return scrapService.getMenuToday(ruCode);
-
+        return scrapService.getMenuToday(ruCode);
     }
 }

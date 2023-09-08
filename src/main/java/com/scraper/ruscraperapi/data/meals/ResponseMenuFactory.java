@@ -1,7 +1,6 @@
 package com.scraper.ruscraperapi.data.meals;
 
 import com.scraper.ruscraperapi.data.ru.Ru;
-import com.scraper.ruscraperapi.data.ru.RuFactory;
 import org.springframework.stereotype.Component;
 
 import java.time.ZoneId;
