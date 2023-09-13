@@ -1,6 +1,7 @@
 package com.scraper.ruscraperapi.scrap;
 
 import com.scraper.ruscraperapi.data.meals.Meal;
+import com.scraper.ruscraperapi.data.meals.MealOption;
 import com.scraper.ruscraperapi.data.meals.ResponseMenu;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -18,8 +19,7 @@ public class ScraperRU {
     private Document htmlDocument;
     private String localDate;
 
-    public void connect(String webURL) {
-        this.localDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM"));
+    private void connectScraper(String webURL) {
         try {
             this.htmlDocument = Jsoup.connect(webURL).get();
         } catch (IOException e) {
@@ -27,7 +27,9 @@ public class ScraperRU {
         }
     }
 
-    public Elements parseTableHtml() {
+    public Elements parseTableHtml(String url) {
+        connectScraper(url);
+        this.localDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM"));
         Element titleContainingDate = htmlDocument.selectFirst("p:contains(" + localDate + ")");
         if (titleContainingDate == null) return null;
         Element menuFromWeekday = titleContainingDate.nextElementSibling();
@@ -35,6 +37,10 @@ public class ScraperRU {
     }
 
     public String extractFileNameWithoutExtension(String url) {
+        if (htmlDocument == null) {
+            throw new IllegalStateException("parseTableHtml must be called before extractFileNameWithoutExtension.");
+        }
+
         int lastIndexOfSlash = url.lastIndexOf('/');
         if (lastIndexOfSlash != -1) {
             String extractedPart = url.substring(lastIndexOfSlash + 1);
@@ -79,6 +85,7 @@ public class ScraperRU {
                     mealPeriod.addMealOption(mealOption);
                 }
             }
-        }}
+        }
+    }
 
 }

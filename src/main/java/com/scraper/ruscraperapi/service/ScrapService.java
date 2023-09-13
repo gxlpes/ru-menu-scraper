@@ -31,8 +31,7 @@ public class ScrapService {
     public Optional<Object> getMenuToday(String ruCode) {
         Ru ru = ruFactory.createRu(ruCode);
         ResponseMenu responseMenu = responseMenuFactory.createResponseMenu(ru);
-        scraperRU.connect(ru.getUrl());
-        Elements mealRows = scraperRU.parseTableHtml();
+        Elements mealRows = scraperRU.parseTableHtml(ru.getUrl());
         Meal mealPeriod = null;
 
         for (Element element : mealRows) {
