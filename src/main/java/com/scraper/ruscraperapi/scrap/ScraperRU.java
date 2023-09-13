@@ -50,42 +50,4 @@ public class ScraperRU {
         return null;
     }
 
-    private void parseMealRows(Elements mealRows, ResponseMenu responseMenu) {
-        Meal mealPeriod = null;
-
-        for (Element element : mealRows) {
-            Element tdElement = element.select("td").first();
-
-            if (tdElement.text().equalsIgnoreCase("CAFÉ DA MANHÃ") || tdElement.text().equalsIgnoreCase("ALMOÇO") || tdElement.text().equalsIgnoreCase("JANTAR")) {
-                if (mealPeriod != null) {
-                    responseMenu.addMeal(mealPeriod);
-                }
-                mealPeriod = new Meal();
-                mealPeriod.setTitle(tdElement.text());
-                continue;
-            }
-
-            if (mealPeriod != null) {
-                String[] contentFromRow = tdElement.html().split("<br>");
-                for (String contentPart : contentFromRow) {
-                    MealOption mealOption = new MealOption();
-
-                    Document contentDocument = Jsoup.parse(contentPart);
-                    String text = contentDocument.text();
-
-                    mealOption.setName(text);
-
-                    Elements imgElements = contentDocument.select("img");
-                    for (Element imgElement : imgElements) {
-                        String src = imgElement.attr("src");
-                        String imageName = extractFileNameWithoutExtension(src);
-                        mealOption.addIcon(imageName);
-                    }
-
-                    mealPeriod.addMealOption(mealOption);
-                }
-            }
-        }
-    }
-
 }
