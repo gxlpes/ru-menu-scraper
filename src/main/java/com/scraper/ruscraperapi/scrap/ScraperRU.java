@@ -1,8 +1,5 @@
 package com.scraper.ruscraperapi.scrap;
 
-import com.scraper.ruscraperapi.data.meals.Meal;
-import com.scraper.ruscraperapi.data.meals.MealOption;
-import com.scraper.ruscraperapi.data.meals.ResponseMenu;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -14,7 +11,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 @Component
-public class ScraperRU {
+public class ScraperRU implements WebScraper {
 
     private Document htmlDocument;
     private String localDate;
@@ -27,7 +24,9 @@ public class ScraperRU {
         }
     }
 
+    @Override
     public Elements parseTableHtml(String url) {
+        if (htmlDocument == null) connectScraper(url);
         connectScraper(url);
         this.localDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM"));
         Element titleContainingDate = htmlDocument.selectFirst("p:contains(" + localDate + ")");
@@ -36,6 +35,7 @@ public class ScraperRU {
         return menuFromWeekday.select("table tbody tr");
     }
 
+    @Override
     public String extractFileNameWithoutExtension(String url) {
         if (htmlDocument == null) {
             throw new IllegalStateException("parseTableHtml must be called before extractFileNameWithoutExtension.");

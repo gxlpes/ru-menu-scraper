@@ -1,9 +1,9 @@
 package com.scraper.ruscraperapi.service;
 
-import com.scraper.ruscraperapi.data.meals.Meal;
-import com.scraper.ruscraperapi.data.meals.MealOption;
-import com.scraper.ruscraperapi.data.meals.ResponseMenu;
-import com.scraper.ruscraperapi.data.meals.ResponseMenuFactory;
+import com.scraper.ruscraperapi.data.meal.Meal;
+import com.scraper.ruscraperapi.data.meal.MealOption;
+import com.scraper.ruscraperapi.data.response.ResponseMenu;
+import com.scraper.ruscraperapi.data.response.ResponseMenuFactory;
 import com.scraper.ruscraperapi.data.ru.Ru;
 import com.scraper.ruscraperapi.data.ru.RuFactory;
 import com.scraper.ruscraperapi.scrap.ScraperRU;
@@ -11,38 +11,41 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.function.Function;
 
-@Service
-public class ScrapService {
+public class ScrapService implements Function<String, Object> {
 
     private final ResponseMenuFactory responseMenuFactory;
-    private final ScraperRU scraperRU;
     private final RuFactory ruFactory;
+    private final ScraperRU scraperRU;
 
     public ScrapService(ResponseMenuFactory responseMenuFactory, RuFactory ruFactory, ScraperRU scraperRU) {
         this.responseMenuFactory = responseMenuFactory;
-        this.scraperRU = scraperRU;
         this.ruFactory = ruFactory;
+        this.scraperRU = scraperRU;
     }
 
-    public Optional<Object> getMenuToday(String ruCode) {
-        Ru ru = ruFactory.createRu(ruCode);
+    @Override
+    public Optional<Object> apply(String ruCode) {
+        Ru ru = ruFactory.createRuBasedByCode(ruCode);
         ResponseMenu responseMenu = responseMenuFactory.createResponseMenu(ru);
         Elements mealRows = scraperRU.parseTableHtml(ru.getUrl());
         Meal mealPeriod = null;
 
         for (Element element : mealRows) {
             Element tdElement = element.select("td").first();
+            String mealTitle = tdElement.text();
 
-            if (tdElement.text().equalsIgnoreCase("CAFÉ DA MANHÃ") || tdElement.text().equalsIgnoreCase("ALMOÇO") || tdElement.text().equalsIgnoreCase("JANTAR")) {
+            if (mealTitle.equalsIgnoreCase("CAFÉ DA MANHÃ") || mealTitle.equalsIgnoreCase("ALMOÇO") || mealTitle.equalsIgnoreCase("JANTAR")) {
                 if (mealPeriod != null) {
                     responseMenu.addMeal(mealPeriod);
                 }
                 mealPeriod = new Meal();
-                mealPeriod.setTitle(tdElement.text());
+                mealPeriod.setTitle(mealTitle);
+                responseMenu.addServed(mealTitle);
+
                 continue;
             }
 

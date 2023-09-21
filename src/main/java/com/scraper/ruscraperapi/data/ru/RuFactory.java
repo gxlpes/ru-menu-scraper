@@ -1,8 +1,9 @@
 package com.scraper.ruscraperapi.data.ru;
 
-public class RuFactory {
+public class RuFactory implements RuFactoryMethods {
 
-    public Ru createRu(String ruCode) {
+    @Override
+    public Ru createRuBasedByCode(String ruCode) {
         String url = getUrlFromRu(ruCode);
         String name = convertRuName(ruCode);
         return new Ru(ruCode, url, name);

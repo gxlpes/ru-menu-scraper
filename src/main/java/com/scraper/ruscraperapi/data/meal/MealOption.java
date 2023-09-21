@@ -1,4 +1,4 @@
-package com.scraper.ruscraperapi.data.meals;
+package com.scraper.ruscraperapi.data.meal;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,5 +1,6 @@
-package com.scraper.ruscraperapi.data.meals;
+package com.scraper.ruscraperapi.data.response;
 
+import com.scraper.ruscraperapi.data.meal.Meal;
 import com.scraper.ruscraperapi.data.ru.Ru;
 import org.springframework.stereotype.Component;
 
@@ -7,8 +8,9 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 @Component
-public class ResponseMenuFactory {
+public class ResponseMenuFactory implements ResponseMenuFactoryMethods {
 
+    @Override
     public ResponseMenu createResponseMenu(Ru ru) {
         ResponseMenu responseMenu = new ResponseMenu();
         responseMenu.setRu(ru);

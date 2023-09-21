@@ -1,4 +1,4 @@
-package com.scraper.ruscraperapi;
+package com.scraper.ruscraperapi.config;
 
 import com.scraper.ruscraperapi.data.ru.RuFactory;
 import org.springframework.context.annotation.Bean;
