@@ -1,4 +1,4 @@
-package com.scraper.ruscraperapi.service;
+package com.scraper.ruscraperapi.functions;
 
 import com.scraper.ruscraperapi.data.meal.Meal;
 import com.scraper.ruscraperapi.data.meal.MealOption;
@@ -11,11 +11,13 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.function.Function;
 
-public class ScrapService implements Function<String, Object> {
+@Service
+public class ScrapService {
 
     private final ResponseMenuFactory responseMenuFactory;
     private final RuFactory ruFactory;
@@ -27,8 +29,7 @@ public class ScrapService implements Function<String, Object> {
         this.scraperRU = scraperRU;
     }
 
-    @Override
-    public Optional<Object> apply(String ruCode) {
+    public Optional<Object> scrape (String ruCode) {
         Ru ru = ruFactory.createRuBasedByCode(ruCode);
         ResponseMenu responseMenu = responseMenuFactory.createResponseMenu(ru);
         Elements mealRows = scraperRU.parseTableHtml(ru.getUrl());
