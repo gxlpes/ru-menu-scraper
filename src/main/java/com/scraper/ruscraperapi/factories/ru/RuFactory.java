@@ -1,12 +1,25 @@
-package com.scraper.ruscraperapi.data.ru;
+package com.scraper.ruscraperapi.factories.ru;
 
-public class RuFactory implements RuFactoryMethods {
+import com.scraper.ruscraperapi.data.ru.Ru;
+import org.springframework.stereotype.Component;
+
+@Component
+public class RuFactory implements IRuFactory {
+
+    private final Ru ru;
+
+    public RuFactory(Ru ru) {
+        this.ru = ru;
+    }
 
     @Override
     public Ru createRuBasedByCode(String ruCode) {
         String url = getUrlFromRu(ruCode);
         String name = convertRuName(ruCode);
-        return new Ru(ruCode, url, name);
+        ru.setUrl(url);
+        ru.setName(name);
+        ru.setCode(ruCode);
+        return ru;
     }
 
     private String getUrlFromRu(String ruCode) {

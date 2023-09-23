@@ -1,15 +1,15 @@
 package com.scraper.ruscraperapi.data.ru;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class Ru {
 
     private String url;
     private String name;
     private String code;
 
-    public Ru(String code, String url, String name) {
-        this.code = code;
-        this.url = url;
-        this.name = name;
+    public Ru() {
     }
 
     public String getCode() {

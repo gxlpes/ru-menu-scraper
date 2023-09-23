@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 @Component
-public class ScraperRU implements WebScraper {
+public class ScraperRU implements IScraperRU {
 
     private Document htmlDocument;
     private String localDate;

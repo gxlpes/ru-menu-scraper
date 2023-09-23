@@ -13,8 +13,8 @@ public class ResponseMenu {
 
     private ZonedDateTime date;
     private List<String> served;
-    private Ru ru;
     private List<Meal> meals;
+    private Ru ru;
 
     public ResponseMenu() {
         this.served = new ArrayList<>(); ;

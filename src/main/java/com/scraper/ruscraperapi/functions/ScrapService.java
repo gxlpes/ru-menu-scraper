@@ -3,9 +3,9 @@ package com.scraper.ruscraperapi.functions;
 import com.scraper.ruscraperapi.data.meal.Meal;
 import com.scraper.ruscraperapi.data.meal.MealOption;
 import com.scraper.ruscraperapi.data.response.ResponseMenu;
-import com.scraper.ruscraperapi.data.response.ResponseMenuFactory;
+import com.scraper.ruscraperapi.factories.responseMenu.ResponseMenuFactory;
 import com.scraper.ruscraperapi.data.ru.Ru;
-import com.scraper.ruscraperapi.data.ru.RuFactory;
+import com.scraper.ruscraperapi.factories.ru.RuFactory;
 import com.scraper.ruscraperapi.scrap.ScraperRU;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -14,10 +14,9 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.function.Function;
 
 @Service
-public class ScrapService {
+public class ScrapService implements IScrapService {
 
     private final ResponseMenuFactory responseMenuFactory;
     private final RuFactory ruFactory;
