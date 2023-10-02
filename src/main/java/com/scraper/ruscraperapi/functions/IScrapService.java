@@ -1,7 +1,8 @@
 package com.scraper.ruscraperapi.functions;
 
-import java.util.Optional;
+import org.springframework.http.ResponseEntity;
+
 
 public interface IScrapService {
-    Optional<Object> scrape(String ruCode);
+    ResponseEntity scrape(String ruCode);
 }

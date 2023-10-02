@@ -1,7 +1,6 @@
 package com.scraper.ruscraperapi.data.response;
 
 import com.scraper.ruscraperapi.data.meal.Meal;
-import com.scraper.ruscraperapi.data.ru.Ru;
 import org.springframework.stereotype.Component;
 
 import java.time.ZonedDateTime;
@@ -14,10 +13,10 @@ public class ResponseMenu {
     private ZonedDateTime date;
     private List<String> served;
     private List<Meal> meals;
-    private Ru ru;
+    private String ruCode;
 
     public ResponseMenu() {
-        this.served = new ArrayList<>(); ;
+        this.served = new ArrayList<>();
         this.meals = new ArrayList<>();
     }
 
@@ -29,10 +28,16 @@ public class ResponseMenu {
         this.served = served;
     }
 
-    public void addServed(String meal) {served.add(meal);}
+    public void addServed(String meal) {
+        served.add(meal);
+    }
 
-    public void setRu(Ru ru) {
-        this.ru = ru;
+    public String getRuCode() {
+        return ruCode;
+    }
+
+    public void setRuCode(String ruCode) {
+        this.ruCode = ruCode;
     }
 
     public ZonedDateTime getDate() {
@@ -55,7 +60,4 @@ public class ResponseMenu {
         meals.add(meal);
     }
 
-    public Ru getRu() {
-        return this.ru;
-    }
 }

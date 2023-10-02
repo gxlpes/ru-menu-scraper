@@ -3,37 +3,36 @@ package com.scraper.ruscraperapi.functions;
 import com.scraper.ruscraperapi.data.meal.Meal;
 import com.scraper.ruscraperapi.data.meal.MealOption;
 import com.scraper.ruscraperapi.data.response.ResponseMenu;
-import com.scraper.ruscraperapi.factories.responseMenu.ResponseMenuFactory;
-import com.scraper.ruscraperapi.data.ru.Ru;
-import com.scraper.ruscraperapi.factories.ru.RuFactory;
+import com.scraper.ruscraperapi.factory.responseMenu.ResponseMenuFactory;
 import com.scraper.ruscraperapi.scrap.ScraperRU;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Service
 public class ScrapService implements IScrapService {
 
     private final ResponseMenuFactory responseMenuFactory;
-    private final RuFactory ruFactory;
     private final ScraperRU scraperRU;
 
-    public ScrapService(ResponseMenuFactory responseMenuFactory, RuFactory ruFactory, ScraperRU scraperRU) {
+    public ScrapService(ResponseMenuFactory responseMenuFactory, ScraperRU scraperRU) {
         this.responseMenuFactory = responseMenuFactory;
-        this.ruFactory = ruFactory;
         this.scraperRU = scraperRU;
     }
 
-    public Optional<Object> scrape (String ruCode) {
-        Ru ru = ruFactory.createRuBasedByCode(ruCode);
-        ResponseMenu responseMenu = responseMenuFactory.createResponseMenu(ru);
-        Elements mealRows = scraperRU.parseTableHtml(ru.getUrl());
-        Meal mealPeriod = null;
+    public ResponseEntity scrape(String ruCode) {
+        ResponseMenu responseMenu = responseMenuFactory.createResponseMenu(ruCode);
+        Elements mealRows = scraperRU.parseTableHtml(ruCode);
+        if(mealRows == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No menu found with the code " + ruCode + " and the date " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM")));
 
+        Meal mealPeriod = null;
         for (Element element : mealRows) {
             Element tdElement = element.select("td").first();
             String mealTitle = tdElement.text();
@@ -75,6 +74,6 @@ public class ScrapService implements IScrapService {
             responseMenuFactory.addMealToResponseMenu(responseMenu, mealPeriod);
         }
 
-        return Optional.of(responseMenu);
+        return ResponseEntity.status(HttpStatus.OK).body(responseMenu);
     }
 }
