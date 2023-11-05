@@ -13,7 +13,7 @@
   <version>0.0.1-SNAPSHOT</version>
   <description>ru-scraper-api</description>
   <build>
-    <finalName>new-jar-name</finalName>
+    <finalName>scraper-bot</finalName>
     <plugins>
       <plugin>
         <artifactId>maven-deploy-plugin</artifactId>
