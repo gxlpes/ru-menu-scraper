@@ -1,0 +1,21 @@
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      java: corretto-17
+  pre_build:
+    commands:
+      - echo "Installing Maven..."
+      - apt-get update
+      - apt-get install -y maven
+  build:
+    commands:
+      - echo "Building Java Lambda function..."
+      - mvn clean install
+  post_build:
+    commands:
+      - echo "Zipping deployment package..."
+      - cp target/scraper-bot-aws.jar scraper-bot-aws.jar
+      - echo "Updating Lambda Function..."
+      - aws lambda update-function-code --function-name scraper-bot-aws --zip-file fileb://scraper-bot-aws.jar --region sa-east-1
+      - echo "DONE!!"

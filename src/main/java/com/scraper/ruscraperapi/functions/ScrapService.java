@@ -3,18 +3,16 @@ package com.scraper.ruscraperapi.functions;
 import com.scraper.ruscraperapi.data.meal.Meal;
 import com.scraper.ruscraperapi.data.meal.MealOption;
 import com.scraper.ruscraperapi.data.response.ResponseMenu;
+import com.scraper.ruscraperapi.exception.types.RuMenuNotFound;
 import com.scraper.ruscraperapi.factory.responseMenu.ResponseMenuFactory;
 import com.scraper.ruscraperapi.scrap.ScraperRU;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Service
 public class ScrapService implements IScrapService {
@@ -27,10 +25,13 @@ public class ScrapService implements IScrapService {
         this.scraperRU = scraperRU;
     }
 
-    public ResponseEntity scrape(String ruCode) {
+    public ResponseMenu scrape(String ruCode) {
         ResponseMenu responseMenu = responseMenuFactory.createResponseMenu(ruCode);
         Elements mealRows = scraperRU.parseTableHtml(ruCode);
-        if(mealRows == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No menu found with the code " + ruCode + " and the date " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM")));
+
+        if (mealRows == null) {
+            throw new RuMenuNotFound("Menu not found with this date " + LocalDateTime.now());
+        }
 
         Meal mealPeriod = null;
         for (Element element : mealRows) {
@@ -74,6 +75,6 @@ public class ScrapService implements IScrapService {
             responseMenuFactory.addMealToResponseMenu(responseMenu, mealPeriod);
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(responseMenu);
+        return responseMenu;
     }
 }

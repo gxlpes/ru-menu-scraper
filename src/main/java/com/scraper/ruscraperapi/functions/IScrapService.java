@@ -1,8 +1,8 @@
 package com.scraper.ruscraperapi.functions;
 
-import org.springframework.http.ResponseEntity;
+import com.scraper.ruscraperapi.data.response.ResponseMenu;
 
 
 public interface IScrapService {
-    ResponseEntity scrape(String ruCode);
+    ResponseMenu scrape(String ruCode);
 }
