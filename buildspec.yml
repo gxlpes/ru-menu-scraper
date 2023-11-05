@@ -15,7 +15,7 @@ phases:
   post_build:
     commands:
       - echo "Zipping deployment package..."
-      - cp target/ru-scraper-bot.jar ru-scraper-bot.jar
+      - cp target/ru-scraper-bot.jar ru-scraper-bot.zip
       - echo "Updating Lambda Function..."
       - aws lambda update-function-code --function-name ru-scraper-bot --zip-file fileb://ru-scraper-bot.jar --region sa-east-1
       - echo "DONE!!"
