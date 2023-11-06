@@ -10,7 +10,6 @@
     </parent>
     <groupId>com.scraper</groupId>
     <artifactId>ru-scraper-api</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
     <name>ru-scraper-api</name>
     <description>ru-scraper-api</description>
     <properties>

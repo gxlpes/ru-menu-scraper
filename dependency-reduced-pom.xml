@@ -10,10 +10,9 @@
   <groupId>com.scraper</groupId>
   <artifactId>ru-scraper-api</artifactId>
   <name>ru-scraper-api</name>
-  <version>0.0.1-SNAPSHOT</version>
   <description>ru-scraper-api</description>
   <build>
-    <finalName>scraper-bot</finalName>
+    <finalName>ru-scraper-bot</finalName>
     <plugins>
       <plugin>
         <artifactId>maven-deploy-plugin</artifactId>
