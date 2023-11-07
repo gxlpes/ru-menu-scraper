@@ -9,9 +9,9 @@
         <relativePath/>
     </parent>
     <groupId>com.scraper</groupId>
-    <artifactId>ru-scraper-api</artifactId>
-    <name>ru-scraper-api</name>
-    <description>ru-scraper-api</description>
+    <artifactId>ru-menu-scraper</artifactId>
+    <name>ru-menu-scraper</name>
+    <description>ru-menu-scraper</description>
     <properties>
         <java.version>17</java.version>
         <wrapper.version>1.0.29.RELEASE</wrapper.version>
@@ -99,6 +99,6 @@
                 </configuration>
             </plugin>
         </plugins>
-        <finalName>ru-scraper-bot</finalName>
+        <finalName>${project.artifactId}</finalName>
     </build>
 </project>

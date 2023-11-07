@@ -8,11 +8,11 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.scraper</groupId>
-  <artifactId>ru-scraper-api</artifactId>
-  <name>ru-scraper-api</name>
-  <description>ru-scraper-api</description>
+  <artifactId>ru-menu-scraper</artifactId>
+  <name>ru-menu-scraper</name>
+  <description>ru-menu-scraper</description>
   <build>
-    <finalName>ru-scraper-bot</finalName>
+    <finalName>${project.artifactId}</finalName>
     <plugins>
       <plugin>
         <artifactId>maven-deploy-plugin</artifactId>
