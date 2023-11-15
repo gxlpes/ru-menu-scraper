@@ -26,8 +26,8 @@ public class ScraperRU implements IScraperRU {
 
     private String getUrlFromRu(String ruCode) {
         return switch (ruCode) {
-            case "bot" -> "https://pra.ufpr.br/ru/cardapio-ru-jardim-botanico/";
-            case "pol" -> "https://pra.ufpr.br/ru/ru-centro-politecnico/";
+            case "BOT" -> "https://pra.ufpr.br/ru/cardapio-ru-jardim-botanico/";
+            case "POL" -> "https://pra.ufpr.br/ru/ru-centro-politecnico/";
             default -> "No URL were found attached with the code " + ruCode;
         };
     }
@@ -37,7 +37,7 @@ public class ScraperRU implements IScraperRU {
         String ruUrl = getUrlFromRu(ruCode);
         if (htmlDocument == null) connectScraper(ruUrl);
         connectScraper(ruUrl);
-        this.localDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM"));
+        this.localDate = LocalDate.now().plusDays(1).format(DateTimeFormatter.ofPattern("dd/MM"));
         Element titleContainingDate = htmlDocument.selectFirst("p:contains(" + localDate + ")");
         if (titleContainingDate == null) return null;
         Element menuFromWeekday = titleContainingDate.nextElementSibling();

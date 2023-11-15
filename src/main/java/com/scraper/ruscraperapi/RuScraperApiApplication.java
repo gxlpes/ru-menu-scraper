@@ -22,14 +22,13 @@ public class RuScraperApiApplication {
     }
 
     @Bean
-    public Function<String, Object> scraperMenu() {
-        return input -> {
+    public Function<Object, Object> scraperMenu() {
+        return (input) -> {
             try {
-                return scrapService.scrape(input);
+                return scrapService.scrape();
             } catch (Exception e) {
                 e.printStackTrace();
                 return "Error: " + e.getMessage();
             }
         };
-    }
-}
+    }}

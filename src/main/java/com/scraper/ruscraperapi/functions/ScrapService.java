@@ -10,6 +10,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -17,6 +18,8 @@ import java.time.LocalDateTime;
 @Service
 public class ScrapService implements IScrapService {
 
+    @Value("${RU_CODE}")
+    private String ruKey;
     private final ResponseMenuFactory responseMenuFactory;
     private final ScraperRU scraperRU;
 
@@ -25,9 +28,9 @@ public class ScrapService implements IScrapService {
         this.scraperRU = scraperRU;
     }
 
-    public ResponseMenu scrape(String ruCode) {
-        ResponseMenu responseMenu = responseMenuFactory.createResponseMenu(ruCode);
-        Elements mealRows = scraperRU.parseTableHtml(ruCode);
+    public ResponseMenu scrape() {
+        ResponseMenu responseMenu = responseMenuFactory.createResponseMenu(ruKey);
+        Elements mealRows = scraperRU.parseTableHtml(ruKey);
 
         if (mealRows == null) {
             throw new RuMenuNotFound("Menu not found with this date " + LocalDateTime.now());

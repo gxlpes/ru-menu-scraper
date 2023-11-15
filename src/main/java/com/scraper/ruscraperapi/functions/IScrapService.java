@@ -4,5 +4,5 @@ import com.scraper.ruscraperapi.data.response.ResponseMenu;
 
 
 public interface IScrapService {
-    ResponseMenu scrape(String ruCode);
+    ResponseMenu scrape();
 }
