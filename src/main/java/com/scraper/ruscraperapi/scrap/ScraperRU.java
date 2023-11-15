@@ -35,6 +35,7 @@ public class ScraperRU implements IScraperRU {
     @Override
     public Elements parseTableHtml(String ruCode) {
         String ruUrl = getUrlFromRu(ruCode);
+        System.out.println("Using the ruCode " + ruCode);
         if (htmlDocument == null) connectScraper(ruUrl);
         connectScraper(ruUrl);
         this.localDate = LocalDate.now().plusDays(1).format(DateTimeFormatter.ofPattern("dd/MM"));
