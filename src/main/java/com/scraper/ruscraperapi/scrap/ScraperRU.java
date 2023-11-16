@@ -38,7 +38,7 @@ public class ScraperRU implements IScraperRU {
         System.out.println("Using the ruCode " + ruCode);
         if (htmlDocument == null) connectScraper(ruUrl);
         connectScraper(ruUrl);
-        this.localDate = LocalDate.now().plusDays(1).format(DateTimeFormatter.ofPattern("dd/MM"));
+        this.localDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM"));
         Element titleContainingDate = htmlDocument.selectFirst("p:contains(" + localDate + ")");
         if (titleContainingDate == null) return null;
         Element menuFromWeekday = titleContainingDate.nextElementSibling();
