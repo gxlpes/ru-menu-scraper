@@ -1,23 +1,26 @@
 package com.scraper.ruscraperapi.data.response;
 
-import com.scraper.ruscraperapi.data.meal.Meal;
+import com.scraper.ruscraperapi.data.meal.MealOption;
 import org.springframework.stereotype.Component;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class ResponseMenu {
 
     private ZonedDateTime date;
-    private List<String> served;
-    private List<Meal> meals;
+
     private String ruCode;
+    private List<String> served;
+    private Map<String, List<MealOption>> meals;
 
     public ResponseMenu() {
         this.served = new ArrayList<>();
-        this.meals = new ArrayList<>();
+        this.meals = new HashMap<>();
     }
 
     public List<String> getServed() {
@@ -44,20 +47,19 @@ public class ResponseMenu {
         return date;
     }
 
-    public List<Meal> getMeals() {
-        return meals;
-    }
-
-    public void setMeals(List<Meal> meals) {
-        this.meals = meals;
-    }
-
     public void setDate(ZonedDateTime date) {
         this.date = date;
     }
 
-    public void addMeal(Meal meal) {
-        meals.add(meal);
+    public Map<String, List<MealOption>> getMeals() {
+        return meals;
     }
 
+    public void setMeals(Map<String, List<MealOption>> meals) {
+        this.meals = meals;
+    }
+
+    public void addMeal(String mealPeriod, List<MealOption> mealOptions) {
+        this.meals.put(mealPeriod, mealOptions);
+    }
 }

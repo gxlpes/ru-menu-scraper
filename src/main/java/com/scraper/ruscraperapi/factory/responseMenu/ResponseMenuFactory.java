@@ -1,6 +1,5 @@
 package com.scraper.ruscraperapi.factory.responseMenu;
 
-import com.scraper.ruscraperapi.data.meal.Meal;
 import com.scraper.ruscraperapi.data.response.ResponseMenu;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +17,4 @@ public class ResponseMenuFactory implements IResponseMenuFactory {
         return responseMenu;
     }
 
-    public void addMealToResponseMenu(ResponseMenu responseMenu, Meal meal) {
-        responseMenu.addMeal(meal);
-    }
 }

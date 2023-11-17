@@ -9,7 +9,7 @@ public class MealOption {
     private List<String> icons;
 
     public MealOption() {
-        this.icons = new ArrayList<>(); // Initialize the icons list in the constructor
+        this.icons = new ArrayList<>();
     }
 
     public String getName() {
