@@ -49,7 +49,9 @@ public class ScrapService implements IScrapService {
 
             if (mealTitle != null) {
                 if (mealPeriodTitle != null) {
-                    meals.put(mealPeriodTitle, new ArrayList<>(mealOptions));
+                    if (!mealOptions.isEmpty()) {
+                        meals.put(mealPeriodTitle, new ArrayList<>(mealOptions));
+                    }
                 }
 
                 mealOptions = new ArrayList<>();
@@ -65,20 +67,22 @@ public class ScrapService implements IScrapService {
                 Document contentDocument = Jsoup.parse(contentPart);
                 String text = contentDocument.text();
 
-                mealOption.setName(text);
+                if (!text.isEmpty()) {
+                    mealOption.setName(text);
 
-                Elements imgElements = contentDocument.select("img");
-                for (Element imgElement : imgElements) {
-                    String src = imgElement.attr("src");
-                    String imageName = scraperRU.extractFileNameWithoutExtension(src);
-                    mealOption.addIcon(imageName);
+                    Elements imgElements = contentDocument.select("img");
+                    for (Element imgElement : imgElements) {
+                        String src = imgElement.attr("src");
+                        String imageName = scraperRU.extractFileNameWithoutExtension(src);
+                        mealOption.addIcon(imageName);
+                    }
+
+                    mealOptions.add(mealOption);
                 }
-
-                mealOptions.add(mealOption);
             }
         }
 
-        if (mealPeriodTitle != null) {
+        if (mealPeriodTitle != null && !mealOptions.isEmpty()) {
             meals.put(mealPeriodTitle, new ArrayList<>(mealOptions));
         }
 
