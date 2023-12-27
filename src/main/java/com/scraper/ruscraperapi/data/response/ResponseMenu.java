@@ -13,7 +13,6 @@ import java.util.Map;
 public class ResponseMenu {
 
     private ZonedDateTime date;
-
     private String ruCode;
     private Map<String, List<MealOption>> meals;
     private List<String> served;
