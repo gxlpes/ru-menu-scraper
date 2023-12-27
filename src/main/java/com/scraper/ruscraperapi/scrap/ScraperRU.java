@@ -1,5 +1,7 @@
 package com.scraper.ruscraperapi.scrap;
 
+import com.scraper.ruscraperapi.data.meal.MealOption;
+import com.scraper.ruscraperapi.helper.ScraperHelper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -11,54 +13,82 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class ScraperRU implements IScraperRU {
 
-    private Document htmlDocument;
-    private String localDate;
+    private final ScraperHelper scraperHelper;
 
-    private void connectScraper(String webURL) {
+    public ScraperRU(ScraperHelper scraperHelper) {
+        this.scraperHelper = scraperHelper;
+    }
+
+    private Document connectScraper(String webURL) {
         try {
-            this.htmlDocument = Jsoup.connect(webURL).get();
+            return Jsoup.connect(webURL).get();
         } catch (IOException e) {
             System.err.println("Failed to retrieve menu: " + e.getMessage());
         }
-    }
-
-    private String getUrlFromRu(String ruCode) {
-        return switch (ruCode) {
-            case "BOT" -> "https://pra.ufpr.br/ru/cardapio-ru-jardim-botanico/";
-            case "POL" -> "https://pra.ufpr.br/ru/ru-centro-politecnico/";
-            default -> "No URL were found attached with the code " + ruCode;
-        };
+        return null;
     }
 
     @Override
     public Elements parseTableHtml(String ruCode) {
-        String ruUrl = getUrlFromRu(ruCode);
-        System.out.println("Using the ruCode " + ruCode);
-        if (htmlDocument == null) connectScraper(ruUrl);
-        connectScraper(ruUrl);
-        this.localDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM"));
+        String ruUrl = scraperHelper.getUrlFromRu(ruCode);
+        Document htmlDocument = this.connectScraper(ruUrl);
+        String localDate = LocalDate.now().minusDays(5).format(DateTimeFormatter.ofPattern("dd/MM"));
         Element titleContainingDate = htmlDocument.selectFirst("p:contains(" + localDate + ")");
-        if (titleContainingDate == null) return null;
         Element menuFromWeekday = titleContainingDate.nextElementSibling();
         return menuFromWeekday.select("table tbody tr");
     }
 
     @Override
-    public String extractFileNameWithoutExtension(String url) {
-        if (htmlDocument == null) {
-            throw new IllegalStateException("parseTableHtml must be called before extractFileNameWithoutExtension.");
+    public String extractTextFromHtml(String htmlContent) {
+        return Jsoup.parse(htmlContent).text();
+    }
+
+    @Override
+    public String extractImageName(Element imgElement, ScraperRU scraperRU) {
+        String src = imgElement.attr("src");
+        return scraperHelper.extractFileNameWithoutExtension(src);
+    }
+
+    @Override
+    public void updateMeals(Map<String, List<MealOption>> meals, List<MealOption> mealOptions, String mealPeriodTitle) {
+        if (mealPeriodTitle != null && !mealOptions.isEmpty()) {
+            meals.put(mealPeriodTitle, new ArrayList<>(mealOptions));
+        }
+    }
+
+    @Override
+    public void processContentFromRow(String htmlContent, List<MealOption> mealOptions, ScraperRU scraperRU) {
+        String[] contentFromRow = htmlContent.split("<br>");
+        for (String contentPart : contentFromRow) {
+            MealOption mealOption = createMealOption(contentPart, scraperRU);
+            if (mealOption != null) {
+                mealOptions.add(mealOption);
+            }
+        }
+    }
+
+    @Override
+    public MealOption createMealOption(String contentPart, ScraperRU scraperRU) {
+        String text = scraperRU.extractTextFromHtml(contentPart);
+
+        if (!text.isEmpty()) {
+            MealOption mealOption = new MealOption();
+            mealOption.setName(text);
+
+            Elements imgElements = Jsoup.parse(contentPart).select("img");
+            for (Element imgElement : imgElements) {
+                String imageName = scraperRU.extractImageName(imgElement, scraperRU);
+                mealOption.addIcon(imageName);
+            }
+
+            return mealOption;
         }
 
-        int lastIndexOfSlash = url.lastIndexOf('/');
-        if (lastIndexOfSlash != -1) {
-            String extractedPart = url.substring(lastIndexOfSlash + 1);
-            int indexOfDot = extractedPart.lastIndexOf('.');
-            if (indexOfDot != -1) return extractedPart.substring(0, indexOfDot);
-        }
         return null;
     }
 

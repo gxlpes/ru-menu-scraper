@@ -15,24 +15,10 @@ public class ResponseMenu {
     private ZonedDateTime date;
 
     private String ruCode;
-    private List<String> served;
     private Map<String, List<MealOption>> meals;
 
     public ResponseMenu() {
-        this.served = new ArrayList<>();
         this.meals = new HashMap<>();
-    }
-
-    public List<String> getServed() {
-        return served;
-    }
-
-    public void setServed(List<String> served) {
-        this.served = served;
-    }
-
-    public void addServed(String meal) {
-        served.add(meal);
     }
 
     public String getRuCode() {
@@ -62,4 +48,5 @@ public class ResponseMenu {
     public void addMeal(String mealPeriod, List<MealOption> mealOptions) {
         this.meals.put(mealPeriod, mealOptions);
     }
+
 }
