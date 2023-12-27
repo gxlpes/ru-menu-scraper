@@ -13,11 +13,12 @@ import java.util.Map;
 public class ResponseMenuBuilder implements IResponseMenuBuilder {
 
     @Override
-    public ResponseMenu createResponseMenu(String ruCode, Map<String, List<MealOption>> meals) {
+    public ResponseMenu createResponseMenu(String ruCode, Map<String, List<MealOption>> meals, List<String> served) {
         ResponseMenu responseMenu = new ResponseMenu();
         responseMenu.setDate(ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")));
         responseMenu.setRuCode(ruCode);
         responseMenu.setMeals(meals);
+        responseMenu.setServed(served);
         return responseMenu;
     }
 

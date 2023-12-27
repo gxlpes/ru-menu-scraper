@@ -16,6 +16,7 @@ public class ResponseMenu {
 
     private String ruCode;
     private Map<String, List<MealOption>> meals;
+    private List<String> served;
 
     public ResponseMenu() {
         this.meals = new HashMap<>();
@@ -43,6 +44,14 @@ public class ResponseMenu {
 
     public void setMeals(Map<String, List<MealOption>> meals) {
         this.meals = meals;
+    }
+
+    public List<String> getServed() {
+        return served;
+    }
+
+    public void setServed(List<String> served) {
+        this.served = served;
     }
 
     public void addMeal(String mealPeriod, List<MealOption> mealOptions) {

@@ -41,6 +41,7 @@ public class ScrapService implements IScrapService {
 
         Map<String, List<MealOption>> meals = new HashMap<>();
         List<MealOption> mealOptions = new ArrayList<>();
+        List<String> served = new ArrayList<>();
         String mealPeriodTitle = null;
         System.out.println(mealRows);
 
@@ -52,6 +53,7 @@ public class ScrapService implements IScrapService {
                 scraperRU.updateMeals(meals, mealOptions, mealPeriodTitle);
                 mealOptions = new ArrayList<>();
                 mealPeriodTitle = mealTitle;
+                served.add(mealTitle);
                 continue;
             }
 
@@ -59,5 +61,5 @@ public class ScrapService implements IScrapService {
         }
 
         scraperRU.updateMeals(meals, mealOptions, mealPeriodTitle);
-        return responseMenuBuilder.createResponseMenu(ruKey, meals);
+        return responseMenuBuilder.createResponseMenu(ruKey, meals, served);
     }}

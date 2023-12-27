@@ -7,5 +7,5 @@ import java.util.List;
 import java.util.Map;
 
 public interface IResponseMenuBuilder {
-    ResponseMenu createResponseMenu(String ruCode, Map<String, List<MealOption>> meals);
+    ResponseMenu createResponseMenu(String ruCode, Map<String, List<MealOption>> meals, List<String> served);
 }
