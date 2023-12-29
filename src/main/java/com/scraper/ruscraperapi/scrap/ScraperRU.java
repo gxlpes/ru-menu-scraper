@@ -37,7 +37,7 @@ public class ScraperRU implements IScraperRU {
     public Elements parseTableHtml(String ruCode) {
         String ruUrl = scraperHelper.getUrlFromRu(ruCode);
         Document htmlDocument = this.connectScraper(ruUrl);
-        String localDate = LocalDate.now().minusDays(5).format(DateTimeFormatter.ofPattern("dd/MM"));
+        String localDate = LocalDate.now().minusDays(7).format(DateTimeFormatter.ofPattern("dd/MM"));
         Element titleContainingDate = htmlDocument.selectFirst("p:contains(" + localDate + ")");
         Element menuFromWeekday = titleContainingDate.nextElementSibling();
         return menuFromWeekday.select("table tbody tr");
