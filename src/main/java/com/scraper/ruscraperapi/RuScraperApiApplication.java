@@ -22,7 +22,7 @@ public class RuScraperApiApplication {
     }
 
     @Bean
-    public Function<Object, Object> scraperMenu() {
+    public Function<void, Object> scraperMenu() {
         return (input) -> {
             try {
                 return scrapService.scrape();
