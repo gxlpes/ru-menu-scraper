@@ -33,6 +33,7 @@ public class ScrapService implements IScrapService {
     }
 
     public ResponseMenu scrape() {
+        System.out.println(ruKey + " key is being used");
         Elements mealRows = scraperRU.parseTableHtml(ruKey);
 
         if (mealRows == null) {
