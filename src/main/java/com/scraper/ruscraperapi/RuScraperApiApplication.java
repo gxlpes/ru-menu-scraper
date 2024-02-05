@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 
+import java.io.InputStream;
 import java.util.function.Function;
 
 @SpringBootApplication
@@ -22,7 +23,7 @@ public class RuScraperApiApplication {
     }
 
     @Bean
-    public Function<Object, Object> scraperMenu() {
+    public Function<InputStream, ?> scraperMenu() {
         return (input) -> {
             try {
                 return scrapService.scrape();
