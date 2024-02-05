@@ -28,9 +28,8 @@ public class ScraperRU implements IScraperRU {
         try {
             return Jsoup.connect(webURL).get();
         } catch (IOException e) {
-            System.err.println("Failed to retrieve menu: " + e.getMessage());
+            throw new RuntimeException("Failed to connect to the URL: " + webURL, e);
         }
-        return null;
     }
 
     @Override
